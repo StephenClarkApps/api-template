@@ -21,4 +21,13 @@ public func routes(_ router: Router) throws {
         // Return the hashed string!
         return try hasher.make(string)
     }
+
+    router.post("users") { req -> Future<User> in
+        let user = User(name: req.query["name"] ?? "Test")
+        return user.save(on: req)
+    }
+
+    router.get("users") { req -> Future<[User]> in
+        return User.query(on: req).all()
+    }
 }
